@@ -1,0 +1,34 @@
+workflows:
+  cordova_build:
+    name: Build Cordova Android APK
+    environment:
+      java: "11"                   # Imposta Java 11
+      node: "18"                   # Imposta Node 18
+    scripts:
+      - name: Installazione Cordova
+        script: |
+          npm install -g cordova
+
+      - name: Aggiunta piattaforma Android
+        script: |
+          cordova platform add android
+
+      - name: Aggiornamento Gradle Build Tools
+        script: |
+          echo "android { buildToolsVersion '34.0.0' }" >> platforms/android/build.gradle
+
+      - name: Compilazione APK
+        script: |
+          cordova build android --release
+
+    artifacts:
+      - platforms/android/app/build/outputs/**/*.apk
+
+    publishing:
+      email:
+        recipients:
+          - "Callrecorder38@gmail.com"
+        notify:
+          success: true
+          failure: true
+          
