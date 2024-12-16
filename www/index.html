@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Giri</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Registro Giri</h1>
+    </header>
+    <main>
+        <!-- Contenitore delle TAB -->
+        <div class="tabs">
+            <button class="tab-button active" data-tab="form-tab">Maschera di input</button>
+            <button class="tab-button" data-tab="table-tab">Tabella Dati</button>
+        </div>
+        
+        <!-- Maschera di input -->
+        <div class="tab-content active" id="form-tab">
+            <section id="form-section">
+                <h2>Inserisci i dati</h2>
+                <form id="data-form">
+                    <label for="data">Data:</label>
+                    <input type="date" id="data" name="data" required>
+                    
+                    <label for="giro">Giro:</label>
+                    <input type="text" id="giro" name="giro" required>
+                    
+                    <label for="materiale">Materiale:</label>
+                    <input type="text" id="materiale" name="materiale" list="materiale-list" required>
+                    <datalist id="materiale-list">
+                        <option value="Plastica">
+                        <option value="Vetro">
+                        <option value="Carta">
+                        <option value="Organico">
+                        <option value="Secco">
+                    </datalist>
+                    
+                    <label for="furgone">Furgone:</label>
+                    <input type="text" id="furgone" name="furgone" maxlength="7" required>
+                    
+                    <label for="caposquadra">Caposquadra:</label>
+                    <input type="text" id="caposquadra" name="caposquadra" list="caposquadra-list">
+                    <datalist id="caposquadra-list">
+                        <option value="Rodolfo Sellati">
+                        <option value="Andrea Lo Biundo">
+                        <option value="Mauro Petti">
+                        <option value="Mario Balletta">
+                        <option value="Rita Mancini">
+                        <option value="Sabrina Orsini">
+                        <option value="Cristina Saccu">
+                    </datalist>
+                    
+                    <label for="note">Note:</label>
+                    <textarea id="note" name="note"></textarea>
+                    
+                    <button type="submit">Salva</button>
+                </form>
+            </section>
+        </div>
+        
+        <!-- Tabella Dati -->
+        <div class="tab-content" id="table-tab">
+            <section id="table-section">
+                <h2>Lista Dati</h2>
+                <div id="table-controls">
+                    <label for="month-selector">Mese:</label>
+                    <select id="month-selector">
+                        <option value="0">Gennaio</option>
+                        <option value="1">Febbraio</option>
+                        <option value="2">Marzo</option>
+                        <option value="3">Aprile</option>
+                        <option value="4">Maggio</option>
+                        <option value="5">Giugno</option>
+                        <option value="6">Luglio</option>
+                        <option value="7">Agosto</option>
+                        <option value="8">Settembre</option>
+                        <option value="9">Ottobre</option>
+                        <option value="10">Novembre</option>
+                        <option value="11">Dicembre</option>
+                    </select>
+                    
+                    <label for="year-selector">Anno:</label>
+                    <input type="number" id="year-selector" value="2024" min="2000" max="2100">
+                    <button id="load-month">Carica</button>
+                </div>
+                <table id="data-table">
+                    <thead>
+                        <tr>
+                            <th>Giorno</th>
+                            <th>Data</th>
+                            <th>Giro</th>
+                            <th>Materiale</th>
+                            <th>Furgone</th>
+                            <th>Caposquadra</th>
+                            <th>Note</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dati inseriti verranno mostrati qui -->
+                    </tbody>
+                </table>
+                <button id="export-button">Esporta dati</button>
+            </section>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
