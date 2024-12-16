@@ -4,7 +4,6 @@ workflows:
     environment:
       java: "11"                   # Imposta Java 11
       node: "18"                   # Imposta Node 18
-      android: true                # Abilita l'ambiente Android
     scripts:
       - name: Installazione Cordova
         script: |
