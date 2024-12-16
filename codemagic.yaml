@@ -1,12 +1,12 @@
 workflows:
-  android-debug-build:
-    name: Android Debug Build
+  cordova_build:
+    name: Cordova Build
     environment:
       flutter: stable
-      java: "11" # Specifica la versione di Java come stringa
+      java: "11"
 
     scripts:
-      - name: Build Android APK
+      - name: Build Cordova Android APK
         script: |
           flutter clean
           flutter pub get
@@ -18,4 +18,4 @@ workflows:
     publishing:
       email:
         recipients:
-          - "Callrecorder38@gmail.com" # Inserisci la tua email tra le virgolette
+          - "Callrecorder38@gmail.com"
