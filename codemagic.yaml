@@ -2,20 +2,26 @@ workflows:
   cordova_build:
     name: Cordova Build
     environment:
-      flutter: stable
-      java: "11"
+      java: 11
+      android: true
 
     scripts:
-      - name: Build Cordova Android APK
+      - name: Install dependencies
         script: |
-          flutter clean
-          flutter pub get
-          flutter build apk --debug
+          npm install -g cordova
+          cordova platform add android
+
+      - name: Build APK
+        script: |
+          cordova build android --release -- --keystore=keystore.jks --storePassword=yourpassword --alias=youralias --password=yourkeypassword
 
     artifacts:
-      - build/app/outputs/flutter-apk/app-debug.apk
+      - platforms/android/app/build/outputs/**/*.apk  # Forza la posizione specifica dell'APK
 
     publishing:
       email:
         recipients:
-          - "Callrecorder38@gmail.com"
+          - "Callrecorder38@gmail.com"  # Inserisci la tua email qui
+        notify:
+          success: true
+          failure: true
