@@ -3,9 +3,7 @@ workflows:
     name: Android Debug Build
     environment:
       flutter: stable
-      java: "11" # Corretto: java deve essere una stringa
-      android:
-        sdk: "34" # Versione SDK
+      java: "11" # Specifica la versione di Java come stringa
 
     scripts:
       - name: Build Android APK
@@ -20,4 +18,4 @@ workflows:
     publishing:
       email:
         recipients:
-          - "Callrecorder38@gmail.com" # Inserisci la tua email qui tra le virgolette
+          - "Callrecorder38@gmail.com" # Inserisci la tua email tra le virgolette
