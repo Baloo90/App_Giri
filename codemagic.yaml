@@ -20,7 +20,7 @@ workflows:
           cordova build android --release
     artifacts:
       - build/outputs/**/*.apk
-      publishing:
+    publishing:
       email:
         recipients:
           - "Callrecorder38@gmail.com"
