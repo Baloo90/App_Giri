@@ -1,34 +1,29 @@
 workflows:
   cordova_build:
-    name: Build Cordova Android APK
+    name: Cordova Build Workflow
+    max_build_duration: 60
     environment:
-      java: "11"                   # Imposta Java 11
-      node: "18"                   # Imposta Node 18
+      node: 16.18.0
+      vars:
+        CORDOVA_ANDROID_VERSION: 11.0.0
+    triggering:
+      events:
+        - push
     scripts:
-      - name: Installazione Cordova
+      - name: Install dependencies
         script: |
           npm install -g cordova
-
-      - name: Aggiunta piattaforma Android
+          cordova telemetry off
+      - name: Build the project
         script: |
-          cordova platform add android
-
-      - name: Aggiornamento Gradle Build Tools
-        script: |
-          echo "android { buildToolsVersion '34.0.0' }" >> platforms/android/build.gradle
-
-      - name: Compilazione APK
-        script: |
+          cordova platform add android@${CORDOVA_ANDROID_VERSION}
           cordova build android --release
-
     artifacts:
-      - platforms/android/app/build/outputs/**/*.apk
-
-    publishing:
+      - build/outputs/**/*.apk
+      publishing:
       email:
         recipients:
           - "Callrecorder38@gmail.com"
         notify:
           success: true
           failure: true
-          
