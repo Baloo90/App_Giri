@@ -1,22 +1,30 @@
 workflows:
-  cordova_build:
-    name: Cordova Build Workflow
-    max_build_duration: 60
+  android-debug-build:
+    name: Android Debug Build
     environment:
-      node: 16.18.0
       vars:
-        CORDOVA_ANDROID_VERSION: 11.0.0
-    triggering:
-      events:
-        - push
+        ANDROID_APP_PATH: "platforms/android/app" # Percorso principale dell'app Android
+        OUTPUT_APK_PATH: "platforms/android/app/build/outputs/apk/debug/app-debug.apk"
+      android:
+        image: latest
+      java:
+        version: 17 # Specifica la versione di Java
     scripts:
-      - name: Install dependencies
+      - name: Installare dipendenze Cordova
         script: |
           npm install -g cordova
-          cordova telemetry off
-      - name: Build the project
+          cordova platform add android
+      - name: Costruire l'app Android
         script: |
-          cordova platform add android@${CORDOVA_ANDROID_VERSION}
-          cordova build android --release
+          cd $ANDROID_APP_PATH
+          ./gradlew assembleDebug
+      - name: Copiare APK negli artifacts
+        script: |
+          mkdir -p $CM_ARTIFACTS_DIR
+          cp $OUTPUT_APK_PATH $CM_ARTIFACTS_DIR/
     artifacts:
-      - build/outputs/**/*.apk
+      - $CM_ARTIFACTS_DIR/app-debug.apk
+    publishing:
+      email:
+        recipients:
+          - "Callrecorder38@gmail.com" # Sostituisci con il tuo indirizzo email
