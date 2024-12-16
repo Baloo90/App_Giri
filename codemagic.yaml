@@ -19,7 +19,7 @@ workflows:
           cordova platform add android@${CORDOVA_ANDROID_VERSION}
           cordova build android --release
     artifacts:
-      - build/outputs/**/*.apk
+      - platforms/android/app/build/outputs/**/*.apk
     publishing:
       email:
         recipients:
