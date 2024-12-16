@@ -9,6 +9,10 @@ workflows:
         script: |
           npm install -g cordova
 
+      - name: Installazione Android Build Tools
+        script: |
+          yes | sdkmanager "build-tools;34.0.0" "platforms;android-34"
+
       - name: Aggiunta piattaforma Android
         script: |
           cordova platform add android
@@ -23,7 +27,7 @@ workflows:
     publishing:
       email:
         recipients:
-          - "Callrecorder38@gmail.com"
+          - "tuaemail@example.com"
         notify:
           success: true
           failure: true
