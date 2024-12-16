@@ -2,29 +2,22 @@ workflows:
   android-debug-build:
     name: Android Debug Build
     environment:
-      vars:
-        ANDROID_APP_PATH: "platforms/android/app" # Percorso principale dell'app Android
-        OUTPUT_APK_PATH: "platforms/android/app/build/outputs/apk/debug/app-debug.apk"
+      flutter: stable
+      java: "11" # Corretto: java deve essere una stringa
       android:
-        image: latest
-      java:
-        version: 17 # Specifica la versione di Java
+        sdk: "34" # Versione SDK
+
     scripts:
-      - name: Installare dipendenze Cordova
+      - name: Build Android APK
         script: |
-          npm install -g cordova
-          cordova platform add android
-      - name: Costruire l'app Android
-        script: |
-          cd $ANDROID_APP_PATH
-          ./gradlew assembleDebug
-      - name: Copiare APK negli artifacts
-        script: |
-          mkdir -p $CM_ARTIFACTS_DIR
-          cp $OUTPUT_APK_PATH $CM_ARTIFACTS_DIR/
+          flutter clean
+          flutter pub get
+          flutter build apk --debug
+
     artifacts:
-      - $CM_ARTIFACTS_DIR/app-debug.apk
+      - build/app/outputs/flutter-apk/app-debug.apk
+
     publishing:
       email:
         recipients:
-          - "Callrecorder38@gmail.com" # Sostituisci con il tuo indirizzo email
+          - "Callrecorder38@gmail.com" # Inserisci la tua email qui tra le virgolette
