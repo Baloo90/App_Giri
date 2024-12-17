@@ -1,0 +1,48 @@
+name: Cordova Build APK
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-android:
+    name: Build Cordova Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout del codice
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Installa Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # Step 3: Installa Cordova
+      - name: Install Cordova
+        run: |
+          npm install -g cordova
+
+      # Step 4: Installa JDK e SDK Android
+      - name: Setup Android environment
+        uses: android-actions/setup-android@v3
+
+      # Step 5: Installa le piattaforme Cordova
+      - name: Install Android platform
+        run: |
+          cordova platform add android@latest
+
+      # Step 6: Compila l'APK
+      - name: Build APK
+        run: |
+          cordova build android --release
+
+      # Step 7: Carica l'APK negli Artifacts
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release-apk
+          path: platforms/android/app/build/outputs/apk/release/*.apk
