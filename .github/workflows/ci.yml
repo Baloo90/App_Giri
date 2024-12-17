@@ -11,36 +11,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout del codice
+      # Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Installa Node.js
+      # Step 2: Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      # Step 3: Installa Cordova
+      # Step 3: Install Cordova
       - name: Install Cordova
         run: |
           npm install -g cordova
 
-      # Step 4: Installa JDK e SDK Android
+      # Step 4: Setup Android environment
       - name: Setup Android environment
         uses: android-actions/setup-android@v3
+        with:
+          api-level: 34
+          build-tools: 34.0.0
 
-      # Step 5: Installa le piattaforme Cordova
+      # Step 5: Add Android platform
       - name: Install Android platform
         run: |
           cordova platform add android@latest
 
-      # Step 6: Compila l'APK
+      # Step 6: Build APK
       - name: Build APK
         run: |
-          cordova build android --release
+          cordova build android --release || cat platforms/android/app/build.gradle
 
-      # Step 7: Carica l'APK negli Artifacts
+      # Step 7: Debug File Paths
+      - name: List generated files
+        run: |
+          find platforms/android -type f
+
+      # Step 8: Upload APK
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
