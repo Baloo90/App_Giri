@@ -1,4 +1,4 @@
-name: Cordova Build APK
+name: Build Cordova Android APK
 
 on:
   push:
@@ -6,51 +6,42 @@ on:
       - main
 
 jobs:
-  build-android:
+  build:
     name: Build Cordova Android APK
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout repository
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      # Step 2: Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: 18
 
-      # Step 3: Install Cordova
       - name: Install Cordova
-        run: |
-          npm install -g cordova
+        run: npm install -g cordova
 
-      # Step 4: Setup Android environment
       - name: Setup Android environment
         uses: android-actions/setup-android@v3
         with:
-          api-level: 34
+          packages: 'platforms;android-34 build-tools;34.0.0'
+          accept-android-sdk-licenses: 'true'
 
-      # Step 5: Add Android platform
-      - name: Install Android platform
-        run: |
-          cordova platform add android@latest
+      - name: Install project dependencies
+        run: npm install
 
-      # Step 6: Build APK
-      - name: Build APK
-        run: |
-          cordova build android --release || (echo "Build failed, showing Gradle logs" && cat platforms/android/app/build.gradle)
+      - name: Add Android platform
+        run: cordova platform add android@latest
 
-      # Step 7: Debug File Paths
-      - name: Debug build files
-        run: |
-          echo "=== Listing all generated files ==="
-          find platforms/android -type f
+      - name: Build the APK
+        run: cordova build android --release
 
-      # Step 8: Upload APK
+      - name: Debug APK directory
+        run: ls -R platforms/android/app/build/outputs
+
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
-          name: app-release-apk
+          name: release-apk
           path: platforms/android/app/build/outputs/apk/release/*.apk
