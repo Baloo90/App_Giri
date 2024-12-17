@@ -54,3 +54,8 @@ jobs:
         with:
           name: app-release-apk
           path: platforms/android/app/build/outputs/apk/release/*.apk
+
+       # Step 9: Trova l'APK
+      - name: Debug build files
+        run: |
+          find platforms/android -type f
