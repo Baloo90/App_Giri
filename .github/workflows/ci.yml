@@ -31,7 +31,6 @@ jobs:
         uses: android-actions/setup-android@v3
         with:
           api-level: 34
-          build-tools: 34.0.0
 
       # Step 5: Add Android platform
       - name: Install Android platform
@@ -41,11 +40,12 @@ jobs:
       # Step 6: Build APK
       - name: Build APK
         run: |
-          cordova build android --release || cat platforms/android/app/build.gradle
+          cordova build android --release || (echo "Build failed, showing Gradle logs" && cat platforms/android/app/build.gradle)
 
       # Step 7: Debug File Paths
-      - name: List generated files
+      - name: Debug build files
         run: |
+          echo "=== Listing all generated files ==="
           find platforms/android -type f
 
       # Step 8: Upload APK
@@ -54,8 +54,3 @@ jobs:
         with:
           name: app-release-apk
           path: platforms/android/app/build/outputs/apk/release/*.apk
-
-       # Step 9: Trova l'APK
-      - name: Debug build files
-        run: |
-          find platforms/android -type f
