@@ -1,10 +1,9 @@
-name: Build Android APK
+name: Build Cordova App
 
 on:
   push:
     branches:
       - main
-  pull_request:
 
 jobs:
   build:
@@ -14,34 +13,28 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up JDK
+    - name: Setup Java 17
       uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
-        java-version: '11'
+        java-version: '17'
 
-    - name: Set up Android SDK
+    - name: Setup Android SDK
       uses: android-actions/setup-android@v2
       with:
-        api-level: 32
-        target: android-32
-        build-tools: '32.0.0'
+        channel: '7.x'
 
-    - name: Install Android Build Tools
+    - name: Install dependencies
       run: |
-        yes | sdkmanager "build-tools;32.0.0" "platforms;android-32"
+        npm install -g cordova
+        cordova platform add android@latest
 
-    - name: Install Cordova
-      run: npm install -g cordova
-
-    - name: Add Android platform
-      run: cordova platform add android
-
-    - name: Build Android APK
-      run: cordova build android --release
+    - name: Build APK
+      run: |
+        cordova build android --release
 
     - name: Upload APK
       uses: actions/upload-artifact@v3
       with:
-        name: App_Giri-APK
+        name: app-release
         path: platforms/android/app/build/outputs/apk/release/*.apk
