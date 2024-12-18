@@ -24,7 +24,12 @@ jobs:
         run: npm install
 
       - name: Add Android Platform
-        run: cordova platform add android@^10.1.2
+        run: cordova platform add android@10.1.2
+
+      - name: Setup Gradle
+        run: |
+          echo "org.gradle.java.home=/usr/lib/jvm/java-11-openjdk-amd64" >> gradle.properties
+          ./gradlew wrapper --gradle-version 7.5
 
       - name: Build Android APK
         run: cordova build android --release
