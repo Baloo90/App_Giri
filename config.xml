@@ -23,7 +23,6 @@
     <!-- Consenti l'esportazione dei dati -->
     <plugin name="cordova-plugin-file" source="npm" />
     <plugin name="cordova-plugin-file-transfer" source="npm" />
-    <plugin name="cordova-plugin-permissions" source="npm" />
     <plugin name="cordova-plugin-whitelist" source="npm" />
 
     <!-- Consenti connessioni esterne -->
