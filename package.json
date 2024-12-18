@@ -1,0 +1,16 @@
+{
+  "name": "app_giri",
+  "version": "1.0.0",
+  "description": "App di raccolta dati per i giri seminotte",
+  "main": "index.html",
+  "scripts": {
+    "build": "cordova build android",
+    "clean": "cordova clean"
+  },
+  "author": "Diego",
+  "license": "ISC",
+  "dependencies": {
+    "cordova": "^11.0.0",
+    "cordova-android": "^10.1.2"
+  }
+}
