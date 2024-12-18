@@ -1,11 +1,14 @@
  name: Build Android APK
 
-on:
+ on:
   push:
     branches:
-      - main
+      - main  # Triggera il workflow quando c'è un push su 'main'
+  pull_request:
+    branches:
+      - main  # Triggera il workflow su una pull request verso 'main'
 
-jobs:
+ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
