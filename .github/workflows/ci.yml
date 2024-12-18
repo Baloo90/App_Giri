@@ -1,48 +1,41 @@
- name: Build Cordova APK
+name: Build Cordova Android App
 
 on:
   push:
     branches:
-      - main  # Attiva il workflow quando viene pushata la branch main
-  workflow_dispatch: # Permette di avviare il workflow manualmente
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
+    name: Build Android APK
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout del repository
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # Installa Node.js e Cordova
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 16
 
       - name: Install Cordova
         run: npm install -g cordova
 
-      # Configura Android SDK
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
-        with:
-          api-level: 34
-          build-tools: 34.0.0
-          target: android-34
+      - name: Install dependencies
+        run: npm install
 
-      # Aggiungi la piattaforma Android
-      - name: Add Android Platform
+      - name: Add Android platform
         run: cordova platform add android
 
-      # Compila l'APK
-      - name: Build APK
+      - name: Build Android APK
         run: cordova build android --release
 
-      # Carica l'APK generato come artefatto
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
-          name: app-release-apk
-          path: platforms/android/app/build/outputs/apk/release/*.apk
+          name: Android APK
+          path: platforms/android/app/build/outputs/**/*.apk
