@@ -1,4 +1,4 @@
-name: Build Cordova Android APK
+name: Build Android APK
 
 on:
   push:
@@ -7,41 +7,33 @@ on:
 
 jobs:
   build:
-    name: Build Cordova Android APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: '16'
 
       - name: Install Cordova
         run: npm install -g cordova
 
-      - name: Setup Android environment
-        uses: android-actions/setup-android@v3
-        with:
-          packages: 'platforms;android-34 build-tools;34.0.0'
-          accept-android-sdk-licenses: 'true'
-
       - name: Install project dependencies
         run: npm install
 
-      - name: Add Android platform
-        run: cordova platform add android@latest
+      - name: Build Android App
+        uses: sparkfabrik/android-build-action@v1.5.0
+        with:
+          project-path: 'android'
+          output-path: 'app-release.apk'
+          build-type: 'assemble'
+          gradle-task: 'assembleRelease'
 
-      - name: Build the APK
-        run: cordova build android --release
-
-      - name: Debug APK directory
-        run: ls -R platforms/android/app/build/outputs
-
-      - name: Upload APK
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: release-apk
-          path: platforms/android/app/build/outputs/apk/release/*.apk
+          name: android-apk
+          path: android/app/build/outputs/apk/release/app-release.apk
