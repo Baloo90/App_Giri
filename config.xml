@@ -13,8 +13,6 @@
     <!-- Permessi per Android -->
     <platform name="android">
         <allow-intent href="market:*" />
-        <icon src="res/icon/android/icon.png" />
-        <splash src="res/screen/android/splash.png" />
         <preference name="AndroidPersistentFileLocation" value="Internal" />
         <preference name="AndroidInsecureFileModeEnabled" value="true" />
     </platform>
