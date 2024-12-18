@@ -1,33 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets"
-        xmlns:cdv="http://cordova.apache.org/ns/1.0"
-        id="com.diego.app"
-        version="1.0.0">
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.diego.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>App_Giri</name>
     <description>App di raccolta dati per i giri seminotte</description>
-    <author email="info@example.com" href="http://example.com">Diego</author>
-    
-    <!-- Imposta l'orientamento -->
-    <preference name="Orientation" value="default" />
-    
-    <!-- Permessi per Android -->
-    <platform name="android">
-        <allow-intent href="market:*" />
-        <preference name="AndroidPersistentFileLocation" value="Internal" />
-        <preference name="AndroidInsecureFileModeEnabled" value="true" />
-    </platform>
-
-    <!-- Consenti il salvataggio persistente dei dati -->
-    <preference name="BackupWebStorage" value="cloud" />
-
-    <!-- Consenti l'esportazione dei dati -->
-    <plugin name="cordova-plugin-file" source="npm" />
-    <plugin name="cordova-plugin-file-transfer" source="npm" />
-    <plugin name="cordova-plugin-whitelist" source="npm" />
-
-    <!-- Consenti connessioni esterne -->
+    <author email="tuo_email@example.com" href="http://example.com/">Diego</author>
+    <content src="index.html" />
     <access origin="*" />
-    <allow-navigation href="*" />
-    <allow-intent href="*" />
-
+    <preference name="AndroidPersistentFileLocation" value="Internal" />
+    <platform name="android">
+        <!-- Plugin necessario -->
+        <plugin name="cordova-plugin-file" spec="^7.0.0" />
+    </platform>
 </widget>
