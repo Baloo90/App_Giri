@@ -13,14 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Docker
+      - name: Build Cordova App
         run: |
           docker build -t cordova-app-builder .
-
-      - name: Run Cordova Build
-        run: |
           docker run --rm -v $(pwd):/app cordova-app-builder
-          
+
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
