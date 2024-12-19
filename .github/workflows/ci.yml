@@ -24,6 +24,12 @@ jobs:
       - name: Install Cordova
         run: npm install -g cordova
 
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
         with:
@@ -32,10 +38,6 @@ jobs:
 
       - name: Add Android Platform
         run: cordova platform add android@10.1.2
-
-      - name: Force Compatibility with Gradle
-        run: |
-          echo "org.gradle.java.home=/usr/lib/jvm/java-11-openjdk-amd64" > platforms/android/gradle.properties
 
       - name: Build Android APK
         run: cordova build android --release
