@@ -10,6 +10,7 @@ RUN wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477
     unzip -q android-tools.zip -d /usr/local/android-sdk/cmdline-tools/latest && \
     rm android-tools.zip
 
+# Configura le variabili d'ambiente per Android
 ENV ANDROID_HOME=/usr/local/android-sdk
 ENV PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
 
@@ -24,8 +25,9 @@ RUN npm install -g cordova
 WORKDIR /app
 COPY . .
 
-# Aggiungi la piattaforma Android
-RUN cordova platform add android
+# Aggiungi la piattaforma Android ed esegui la build
+RUN cordova platform add android && \
+    cordova build android --release
 
-# Comando per eseguire la build
-CMD ["cordova", "build", "android", "--release"]
+# Default command (non necessario, ma utile se vuoi eseguire qualcosa alla fine)
+CMD ["ls", "-l", "platforms/android/app/build/outputs/apk/release/"]
