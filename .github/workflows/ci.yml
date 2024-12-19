@@ -1,10 +1,7 @@
-name: Build Android APK
+name: Build Cordova Android App
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
@@ -13,41 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      # Checkout del repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
+      # Build dell'immagine Docker
+      - name: Build Docker image
+        run: docker build -t cordova-android-build .
 
-      - name: Install Cordova
-        run: npm install -g cordova
-
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: Setup Android SDK
+      # Esecuzione della build Cordova
+      - name: Build APK using Docker
         run: |
-          sudo apt-get update
-          sudo apt-get install -y openjdk-17-jdk
-          echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
-          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
-          unzip cmdline-tools.zip -d $ANDROID_HOME/cmdline-tools
-          mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          docker run --rm \
+            -v ${{ github.workspace }}:/app \
+            cordova-android-build
 
-      - name: Add Android Platform
-        run: cordova platform add android@10.1.2
-
-      - name: Build Android APK
-        run: cordova build android --release
-
-      - name: Upload APK to Artifacts
+      # Archiviazione dell'APK come artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
-          name: app-release
+          name: app-release.apk
           path: platforms/android/app/build/outputs/apk/release/*.apk
