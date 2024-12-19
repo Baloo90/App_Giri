@@ -1,16 +1,17 @@
- name: Build Android APK
+name: Build Android APK
 
- on:
+on:
   push:
     branches:
-      - main  # Triggera il workflow quando c'è un push su 'main'
+      - main
   pull_request:
     branches:
-      - main  # Triggera il workflow su una pull request verso 'main'
+      - main
 
- jobs:
+jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -23,13 +24,15 @@
       - name: Install Cordova
         run: npm install -g cordova
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          api-level: 34
+          target: default
+          build-tools: 34.0.0
+
       - name: Add Android Platform
         run: cordova platform add android@10.1.2
-
-      - name: Install Android Build Tools
-        run: |
-          echo "sdk.dir=/usr/local/lib/android/sdk" > local.properties
-          yes | sdkmanager "build-tools;34.0.0" "platforms;android-34"
 
       - name: Build Android APK
         run: cordova build android --release
