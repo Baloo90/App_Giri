@@ -2,22 +2,21 @@
 FROM node:14
 
 # Installa Java JDK richiesto per Android
-RUN apt-get update && apt-get install -y openjdk-11-jdk
+RUN apt-get update && apt-get install -y openjdk-11-jdk wget unzip
 
-# Installa il pacchetto Android SDK
-RUN apt-get install -y wget unzip && \
-    wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O android-tools.zip && \
-    mkdir -p /usr/local/android-sdk/cmdline-tools && \
-    unzip android-tools.zip -d /usr/local/android-sdk/cmdline-tools && \
+# Scarica e installa Android Command Line Tools
+RUN wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O android-tools.zip && \
+    mkdir -p /usr/local/android-sdk/cmdline-tools/latest && \
+    unzip -q android-tools.zip -d /usr/local/android-sdk/cmdline-tools/latest && \
     rm android-tools.zip
 
 # Configura le variabili d'ambiente
 ENV ANDROID_SDK_ROOT=/usr/local/android-sdk
-ENV PATH=$PATH:/usr/local/android-sdk/cmdline-tools/bin:/usr/local/android-sdk/platform-tools
+ENV PATH=$PATH:/usr/local/android-sdk/cmdline-tools/latest/bin:/usr/local/android-sdk/platform-tools
 
 # Accetta le licenze Android e installa gli strumenti necessari
 RUN yes | sdkmanager --licenses && \
-    sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+    sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
 # Installa Cordova
 RUN npm install -g cordova
