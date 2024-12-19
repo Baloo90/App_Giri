@@ -1,4 +1,4 @@
-name: Build Cordova Android App
+name: Build Cordova App
 
 on:
   push:
@@ -10,24 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout del repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Build dell'immagine Docker
-      - name: Build Docker image
-        run: docker build -t cordova-android-build .
-
-      # Esecuzione della build Cordova
-      - name: Build APK using Docker
+      - name: Set up Docker
         run: |
-          docker run --rm \
-            -v ${{ github.workspace }}:/app \
-            cordova-android-build
+          docker build -t cordova-app-builder .
 
-      # Archiviazione dell'APK come artifact
+      - name: Run Cordova Build
+        run: |
+          docker run --rm -v $(pwd):/app cordova-app-builder
+          
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
           name: app-release.apk
-          path: platforms/android/app/build/outputs/apk/release/*.apk
+          path: platforms/android/app/build/outputs/apk/release/app-release.apk
